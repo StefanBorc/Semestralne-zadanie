@@ -2,33 +2,26 @@ package org.example;
 
 import java.io.*;
 
-import java.util.ArrayList;
-
 public class Text {
-    private ArrayList<StringBuilder> zasifrovaneTexty;
-
-    public ArrayList<StringBuilder> getZasifrovaneTexty() {
-        return zasifrovaneTexty;
+    private StringBuilder zasifrovanyText;
+    public StringBuilder getZasifrovanyText() {
+        return zasifrovanyText;
     }
-
-    public Text() throws IOException {
-        zasifrovaneTexty = new ArrayList<>();
-        nacitatTexty();
+    public Text(String nazovSuboru) throws IOException {
+        zasifrovanyText = new StringBuilder();
+        nacitatText(nazovSuboru);
     }
-
-    protected void nacitatTexty() throws IOException {
-        int i = 1;
+    protected void nacitatText(String nazovSuboru) throws IOException {
         String st;
-        File f;
-        while (i <= 30) {
-            f = new File("prilohy", i + ".txt");
-            BufferedReader br = new BufferedReader(new FileReader(f));
-            st = "";
-            while ((st = br.readLine()) != null) {
-                zasifrovaneTexty.add(new StringBuilder(st));
-            }
-            i++;
-            br.close();
+        File f = new File(nazovSuboru);
+        if(!f.canExecute()){
+            return ;
         }
+        BufferedReader br = new BufferedReader(new FileReader(f));
+        st = "";
+        while ((st = br.readLine()) != null) {
+            zasifrovanyText.append(st);
+        }
+        br.close();
     }
 }

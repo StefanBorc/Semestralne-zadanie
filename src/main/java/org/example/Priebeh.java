@@ -1,43 +1,37 @@
 package org.example;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Priebeh {
     private Text text;
     private StatistickeVlastnosti vlastnosti;
     private Desifrovanie desifrovanie;
-    private ArrayList<String> kluce;
-    private ArrayList<StringBuilder> otvoreneTexty;
+    private String kluc;
+    private StringBuilder otvorenyText;
 
-    public Priebeh() throws IOException {
-        text = new Text();
+    public Priebeh(String nazovSuboru) throws IOException {
+        text = new Text(nazovSuboru);
         vlastnosti = new StatistickeVlastnosti();
         desifrovanie = new Desifrovanie(vlastnosti);
-        kluce = new ArrayList<>();
-        otvoreneTexty = new ArrayList<>();
         odhalitKlucText();
         vytlacitKlucText();
     }
-
     private void odhalitKlucText() {
-        for (int i = 0; i < text.getZasifrovaneTexty().size(); i++) {
-            desifrovanie.udadnutKluc(text.getZasifrovaneTexty().get(i).toString());
-            kluce.add(desifrovanie.getKluc());
-            StringBuilder ot = desifrovanie.desifrovatText(text.getZasifrovaneTexty().get(i).toString(), desifrovanie.getKluc());
-            otvoreneTexty.add(ot);
+        if(text.getZasifrovanyText().length()>0){
+            desifrovanie.udadnutKluc(text.getZasifrovanyText().toString());
+            kluc=desifrovanie.getKluc();
+            otvorenyText = desifrovanie.desifrovatText(text.getZasifrovanyText().toString(), desifrovanie.getKluc());
         }
-
+        else{
+            kluc="";
+            otvorenyText=new StringBuilder();
+        }
     }
 
     private void vytlacitKlucText() {
-        for (int i = 0; i < kluce.size(); i++) {
-            System.out.println("PT: " + otvoreneTexty.get(i));
-            System.out.println("CT: " + text.getZasifrovaneTexty().get(i));
-            System.out.println("KEY: " + kluce.get(i));
-
-        }
-
+        System.out.println("PT: " + otvorenyText);
+        System.out.println("CT: " + text.getZasifrovanyText());
+        System.out.println("KEY: " + kluc);
     }
 
 }
